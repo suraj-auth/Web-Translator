@@ -109,7 +109,7 @@ function App() {
         delay: 0.7,
         rotation: 360, // Fewer rotations for smaller screens
         top: "5%", // Adjust position for smaller screens
-        left: "11%",
+        left: "10%",
         transformOrigin: "50% 50%",
         duration: 1.3,
         ease: "power2.out",
