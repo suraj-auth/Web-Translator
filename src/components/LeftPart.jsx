@@ -10,16 +10,23 @@ function LeftPart() {
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
   async function startListening() {
-    audioRef.current.playbackRate += 2.5;
-    audioRef.current.play();
-    recognition.lang = value.LeftSelectRef.current.value;
-    recognition.interimResults = true;
-    recognition.continuous = false;
-    recognition.start();
-    recognition.addEventListener("result", (event) => {
-      const transcript = event.results[0][0].transcript;
-      value.TextRef.current.value = transcript;
+    const permissionStatus = await navigator.permissions.query({
+      name: "microphone",
     });
+    if (permissionStatus.state != "granted") {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } else {
+      audioRef.current.playbackRate += 2.5;
+      audioRef.current.play();
+      recognition.lang = value.LeftSelectRef.current.value;
+      recognition.interimResults = true;
+      recognition.continuous = false;
+      recognition.start();
+      recognition.addEventListener("result", (event) => {
+        const transcript = event.results[0][0].transcript;
+        value.TextRef.current.value = transcript;
+      });
+    }
   }
   async function stopListening() {
     recognition.stop();
